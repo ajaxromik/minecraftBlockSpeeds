@@ -194,12 +194,13 @@
     <option value="0" disabled selected>Select a pickaxe</option>
     <option value="1">Wooden Pickaxe</option>
     <option value="2">Stone Pickaxe</option>
+    <option value="5">Golden Pickaxe</option>
     <option value="3">Iron Pickaxe</option>
     <option value="4">Diamond Pickaxe</option>
   </select>
   <select id="efficiency">
-    <option value="0" disabled selected>Efficiency Level</option>
-    <option value="0">0</option>
+    <option value="0" disabled>Efficiency Level</option>
+    <option value="0" selected>0</option>
     <option value="2">I</option>
     <option value="5">II</option>
     <option value="10">III</option>
@@ -229,8 +230,8 @@
     //   $('.preloader').fadeOut(1000); // set duration in brackets
     // });
 
-    // hand, wood, stone, iron, diamond
-    const tools = [1, 2, 4, 6, 8];
+    // hand, wood, stone, iron, diamond, gold
+    const tools = [1, 2, 4, 6, 8, 12];
     // levels of efficiency starting at 0
     const efficiencyLevel = [0, 2, 5, 10, 17, 26, 37, 50, 65, 82];
     //1=wood, 2=stone, 3=iron, 4=diamond because that's what we did
@@ -265,9 +266,9 @@
           need to test if efficiency still helps out
           when you cannot harvest the block
         **/
-        pickMultiplier = tools[pick.value];
+        pickMultiplier = tools[pick.value] + Number(efficiency.value);
         if(canHarvest(Number(pick.value), ore.value)) {
-          pickMultiplier += Number(efficiency.value); //if you can harvest it, your efficiency boosts it
+          // pickMultiplier += Number(efficiency.value); //if you can harvest it, your efficiency boosts it edit: mc wiki is wrong; efficiency always boosts mining speed if it's the right tool
           blockHardness *= 30;
         } else { //if cannot harvest the block with current pick
           // pickMultiplier = 1; //the multiplier becomes 1 because that's how minecraft works edit: the wiki is wrong; confirmed through testing that this is false
@@ -308,11 +309,9 @@
       var harvestable = false;
       switch(pick) {
         case 1: //wooden pick
+        case 5: //golden pick follows the same
           switch(ore){
             case "cobble":
-              harvestable = true;
-              break;
-
             case "coal":
               harvestable = true;
               break;
@@ -325,17 +324,8 @@
         case 2: //stone pick
           switch(ore){
             case "cobble":
-              harvestable = true;
-              break;
-
             case "coal":
-              harvestable = true;
-              break;
-
             case "iron":
-              harvestable = true;
-              break;
-
             case "lapis":
               harvestable = true;
               break;
